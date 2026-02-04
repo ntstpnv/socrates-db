@@ -24,14 +24,14 @@ log = get_log()
 last = sidebar.toggle("Новые результаты", value=True)
 if last:
     ft_list = [(0, ""), (0, ""), (0, ""), (0, ""), (0, "")]
-    for g, g_dict in log.items():
-        for n, ti_dict in g_dict.items():
+    for g, fn_dict in log.items():
+        for fn, ti_dict in fn_dict.items():
             for ti, r_list in ti_dict.items():
                 for r in r_list:
                     ft, _, p, _ = r.split("=")
                     ft = int(ft)
                     if ft > ft_list[0][0]:
-                        r = f"{g} = {n} = {catalog[ti]} = {p} из 30"
+                        r = f"{g} = {fn} = {catalog[ti]} = {p} из 30"
                         insort_left(ft_list, (ft, r))
                         del ft_list[0]
     json(
