@@ -31,14 +31,15 @@ if last:
                     ft, _, p, _ = r.split("=")
                     ft = int(ft)
                     if ft > ft_list[0][0]:
-                        r = f"{g} = {fn} = {catalog[ti]} = {p} из 30"
+                        r = f"\n{g}\n{fn}\n{catalog[ti]}\n{p} из 30\n"
                         insort_left(ft_list, (ft, r))
                         del ft_list[0]
     json(
         {
             datetime.fromtimestamp(ft).strftime("%H:%M %d.%m.%y"): r
             for ft, r in reversed(ft_list)
-        }
+        },
+        width=400,
     )
 
 group = sidebar.selectbox(
@@ -59,7 +60,7 @@ if group:
 
     best, results = sidebar.toggle("Только лучшие попытки", value=True), {}
     if best:
-        for n, ti_dict in log[group].items():
+        for fn, ti_dict in log[group].items():
             ft_, et_min, p_max, m_ = None, 0, 0, None
             for ti, r_list in ti_dict.items():
                 if catalog[ti] == tn:
@@ -69,16 +70,16 @@ if group:
                         if p_max < p or p_max == p and et_min > et:
                             ft_, et_min, p_max, m_ = ft, et, p, m
             if ft_:
-                results[n] = f"{p_max} из 30"
+                results[fn] = f"{p_max} из 30"
     else:
-        for n, ti_dict in log[group].items():
+        for fn, ti_dict in log[group].items():
             for ti, r_list in ti_dict.items():
                 if catalog[ti] == tn:
                     for r in r_list:
                         ft, et, p, m = r.split("=")
                         ft, et = int(ft), int(et)
-                        results.setdefault(n, {})
+                        results.setdefault(fn, {})
                         ft = datetime.fromtimestamp(ft).strftime("%H:%M %d.%m.%y")
                         et = f"{et // 60}:{et % 60:02}"
-                        results[n][f"{ft} = {et} = {p} из 30"] = m
+                        results[fn][f"{ft} = {et} = {p} из 30"] = m
     json(results)
