@@ -22,6 +22,8 @@ def update_students() -> None:
 
         #
 
+        students = dict(sorted(students.items()))
+
         file.seek(0)
         json.dump(students, file, ensure_ascii=False, indent=2)
         file.truncate()
