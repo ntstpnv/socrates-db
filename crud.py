@@ -17,7 +17,7 @@ def update_log() -> None:
 
 
 def update_students() -> None:
-    with open("students.json", "r+", encoding="utf-8") as file:
+    with open("groups.json", "r+", encoding="utf-8") as file:
         students = json.load(file)
 
         #
